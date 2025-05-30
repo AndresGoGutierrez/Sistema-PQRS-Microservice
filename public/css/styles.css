@@ -1,0 +1,207 @@
+/* Reset de Estilos */
+* {
+    margin: 0; /* Elimina el margen exterior */
+    padding: 0; /* Elimina el relleno */
+    box-sizing: border-box; /* Hace que el modelo de caja incluya el padding y el borde */
+}
+
+/* Estilos Generales */
+body {
+    font-family: Arial, sans-serif; /* Se establece la fuente */
+    background-color: #f2f2f2; /* Color de fondo */
+    display: flex; /* Se usa el modelo de caja flexible */
+    flex-direction: column;
+    justify-content: center; /* Se centra horizontalmente */
+    align-items: center; /* Se centra verticalmente */
+    height: 100vh;
+    padding-left: 100px;
+    padding-right: 100px; /* El cuerpo ocupa toda la altura de la ventana */
+}
+
+.fondoIndex {
+    background: linear-gradient(90deg,hsla(0, 0%, 100%, 0.8),#ffffff60),
+    url(../img/fondo_inicio.jpg);
+    background-size: cover;
+    display: inline-flex;
+    justify-content: center;
+    background-position:center;
+}
+.fondoPQRS {
+    background: linear-gradient(90deg,hsla(0, 0%, 100%, 0.8),#ffffff60),
+    url(../img/Fondo\ 1.jpg);
+    background-size: cover;
+    display: inline-flex;
+    justify-content: center;
+    background-position:center;
+}
+.fondoHistorial {
+    background: linear-gradient(90deg,hsla(0, 0%, 100%, 0.8),#ffffff60),
+    url(../img/Fondo\ 1.jpg);
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    background-position:center;
+}
+.fondoSumbit{
+    background:
+    url(../img/pqrs.jpg);
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    background-position:center;
+}
+
+.contenedor {
+    background-color: #fff; /* Color de fondo del formulario */
+    padding: 20px; /* Relleno interior del formulario */
+    border-radius: 10px; /* Bordes redondeados */
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Sombra */
+    max-width: 350px; /* Ancho máximo del formulario */
+    width: 100%; /* Se ajusta al ancho disponible */
+}
+
+.container {
+    width: 80%; /* Ancho del contenedor */
+    margin: auto; /* Centra el contenedor horizontalmente */
+    overflow: hidden; /* Evita que el contenido sobresalga del contenedor */
+}
+
+/* Encabezados */
+h1 {
+    color: #001A72  ; /* Color del encabezado */
+    margin-bottom: 20px; /* Margen inferior */
+    text-align: center; /* Centra el texto */
+    font-size: 36px; /* Tamaño de fuente */
+    text-shadow: 1px 1px 1px #ccc; /* Sombra del texto */
+}
+
+/* Enlaces */
+a {
+    text-align: center;
+    text-decoration: none; /* Quita el subrayado */
+    color: white; /* Color del texto */
+    display: flex; /* Muestra los enlaces como bloques */
+    flex-direction: column;
+    padding: 10px 20px; /* Relleno */
+    background-color: #001A72 ; /* Color de fondo */
+    border-radius: 5px; /* Borde redondeado */
+    transition: background-color 0.3s ease; /* Transición suave */
+    margin: 10px; /* Margen */
+}
+
+a:hover {
+    background-color: #E5E6F5;
+    color: #001A72; /* Cambia el color de fondo al pasar el cursor sobre el enlace */
+}
+
+/* Botones */
+button, .button {
+    display: inline-block; /* Muestra los botones como bloques */
+    background: #001A72; /* Color de fondo */
+    color: #fff; /* Color del texto */
+    border: none; /* Sin borde */
+    padding: 10px 20px; /* Relleno */
+    cursor: pointer; /* Cursor al pasar por encima */
+    border-radius: 5px; /* Borde redondeado */
+    transition: background 0.3s ease; /* Transición suave */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra */
+    margin-right: 10px; /* Margen derecho */
+}
+
+button:last-child, .button:last-child {
+    margin-right: 0; /* Elimina el margen derecho del último botón en una fila */
+}
+
+button:hover, .button:hover {
+    background-color: #E5E6F5;
+    color: #001A72; /* Cambia el color de fondo al pasar el cursor sobre el botón */
+}
+
+/* Formularios */
+input[type="text"],
+input[type="email"],
+select,
+textarea {
+    width: 100%; /* Ancho completo */
+    padding: 10px; /* Relleno */
+    margin-bottom: 10px; /* Margen inferior */
+    border-radius: 5px; /* Borde redondeado */
+    border: 1px solid #ccc; /* Borde */
+}
+
+textarea {
+    height: 100px; /* Altura */
+}
+
+/* Estilos para la tabla */
+table {
+    width: 100%; /* Ancho completo */
+    border-spacing: 0; /* Espacio entre bordes */
+    border-collapse: collapse; /* Colapsa los bordes */
+    margin-bottom: 20px; /* Margen inferior */
+}
+
+th, td {
+    padding: 12px; /* Relleno */
+    border: 1px solid #ccc; /* Borde */
+}
+
+th {
+    background-color: #001A72; /* Color de fondo del encabezado */
+    color: #fff; /* Color del texto */
+}
+
+td {
+    text-align: left; /* Alineación del texto */
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2b3; /* Color de fondo para filas pares */
+}
+tr:nth-child(odd) {
+    background-color: #e3e3ecb3; /* Color de fondo para filas pares */
+}
+
+tr:hover {
+    background-color: #ddd; /* Cambia el color de fondo al pasar el cursor sobre la fila */
+}
+
+/* Tarjetas */
+.card {
+    background: #fff; /* Color de fondo */
+    border-radius: 5px; /* Borde redondeado */
+    padding: 20px; /* Relleno */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra */
+    margin-bottom: 20px; /* Margen inferior */
+}
+
+/* Mensajes de Error */
+.error-msg {
+    background: #8b0000; /* Color de fondo */
+    color: #fff; /* Color del texto */
+    padding: 10px; /* Relleno */
+    border-radius: 5px; /* Borde redondeado */
+    margin-bottom: 10px; /* Margen inferior */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra */
+}
+
+/* Mensajes de Éxito */
+.success-msg {
+    background: #556b2f; /* Color de fondo */
+    color: #fff; /* Color del texto */
+    padding: 10px; /* Relleno */
+    border-radius: 5px; /* Borde redondeado */
+    margin-bottom: 10px; /* Margen inferior */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra */
+}
+
+/* Pie de Página */
+footer {
+    background: #4b0082; /* Color de fondo */
+    color: #fff; /* Color del texto */
+    text-align: center; /* Centra el texto */
+    padding: 10px; /* Relleno */
+    position: fixed; /* Fija la posición */
+    bottom: 0; /* Abajo */
+    width: 100%; /* Ancho completo */
+}

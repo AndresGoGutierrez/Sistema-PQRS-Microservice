@@ -1,0 +1,135 @@
+/* Establece la fuente principal para todo el cuerpo del documento */
+body {
+    font-family: Arial, sans-serif;
+    background-color: white; /* Cambia el color de fondo a blanco */
+    display:  flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background: linear-gradient(90deg,hsla(0, 0%, 100%, 0.8),#ffffff60),
+    url(../img/admin_fondo.jpeg);
+    background-size: cover;
+    background-position:center;
+}
+
+/* Estilos para los encabezados de nivel 1 */
+h1 {
+    color: #333; /* Establece el color del texto de los encabezados h1 */
+}
+
+/* Estilos para las tablas */
+table {
+    width: 70%; /* La tabla ocupa el 100% del ancho disponible */
+    border-collapse: collapse; /* Fusiona los bordes de las celdas de la tabla */
+    margin-top: 20px; /* Margen superior de la tabla */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Agrega una sombra suave */ 
+}
+
+
+/* Estilos para las celdas de las tablas */
+th, td {
+    padding: 12px; /* Añade espacio interno a las celdas */
+    text-align: left; /* Alinea el texto a la izquierda */
+    border-bottom: 1px solid #ddd; /* Agrega un borde inferior a las celdas */
+}
+
+/* Estilos para las celdas de encabezado de las tablas */
+th {
+    background-color: #001A72; /* Color de fondo azul */
+    color: #fcfcfc; /* Color del texto */
+    padding: 12px; /* Añade espacio interno a las celdas */
+    text-align: left; /* Alinea el texto a la izquierda */
+    border-bottom: 1px solid #ddd; /* Agrega un borde inferior a las celdas */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Agrega un efecto de sombra */
+}
+
+/* Estilos para los formularios */
+form {
+    margin-bottom: 20px; /* Margen inferior para los formularios */
+}
+
+/* Estilos para el campo de comentario */
+textarea {
+    width: calc(100% - 22px); /* Ancho del campo de comentario */
+    padding: 8px; /* Añade espacio interno alrededor del texto */
+    margin-top: 5px; /* Margen superior del campo de comentario */
+    border: 1px solid #ccc; /* Borde del campo de comentario */
+    border-radius: 4px; /* Borde redondeado del campo de comentario */
+    resize: none;
+}
+
+/* Estilos para los botones */
+button {
+    background-color: #001A72; /* Color de fondo del botón */
+    color: white; /* Color del texto del botón */
+    padding: 12px 20px; /* Añade espacio interno alrededor del texto */
+    border: none; /* Sin borde */
+    border-radius: 4px; /* Borde redondeado */
+    cursor: pointer; /* Cambia el cursor al pasar por encima */
+    margin-top: 10px; /* Margen superior */
+}
+
+/* Cambia el color de fondo del botón al pasar el cursor sobre él */
+button:hover {
+    background-color: #E5E6F5;
+    color: #001A72;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2b3; /* Color de fondo para filas pares */
+}
+tr:nth-child(odd) {
+    background-color: #e3e3ecb3; /* Color de fondo para filas pares */
+}
+
+/* Estilos para las listas desplegables */
+select {
+    width: calc(100% - 22px); /* Ancho de la lista desplegable */
+    padding: 10px; /* Añade espacio interno alrededor del texto */
+    border: 1px solid #ccc; /* Borde de la lista desplegable */
+    border-radius: 4px; /* Borde redondeado */
+    background-color: white; /* Color de fondo */
+    font-size: 16px; /* Tamaño del texto */
+    appearance: none; /* Elimina el estilo predeterminado del sistema operativo */
+    -webkit-appearance: none; /* Para navegadores basados en WebKit */
+    -moz-appearance: none; /* Para navegadores basados en Gecko */
+    background-image: url('data:image/svg+xml;utf8,<svg fill="%23333" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="24px" height="24px"><path d="M7 10l5 5 5-5H7z"/></svg>'); /* Agrega una flecha desplegable */
+    background-repeat: no-repeat; /* No se repite la imagen de fondo */
+    background-position: right 10px center; /* Posición de la imagen de fondo */
+}
+
+/* Estilos para el botón de cerrar sesión */
+.logout-button {
+    background-color: #001A72; /* Color de fondo del botón */
+    color: white; /* Color del texto del botón */
+    padding: 12px 20px; /* Añade espacio interno alrededor del texto */
+    border: none; /* Sin borde */
+    border-radius: 4px; /* Borde redondeado */
+    cursor: pointer; /* Cambia el cursor al pasar por encima */
+    margin-top: 20px; /* Margen superior */
+    display: block; /* Muestra el botón como un bloque */
+    width: 100%; /* Ancho del botón */
+    box-sizing: border-box; /* Incluye el padding y el borde en el ancho y alto total */
+}
+
+/* Cambia el color de fondo del botón de cerrar sesión al pasar el cursor sobre él */
+.logout-button:hover {
+    background-color: #E5E6F5;
+    color: #001A72;
+}
+
+a {
+    text-decoration: none; /* Quita el subrayado */
+    color: #fbf9fc; /* Color del texto */
+    display: inline-block; /* Muestra los enlaces como bloques */
+    padding: 10px 20px; /* Relleno */
+    background-color: #001A72; /* Color de fondo */
+    border-radius: 5px; /* Borde redondeado */
+    transition: background-color 0.3s ease; /* Transición suave */
+    margin: 10px; /* Margen */
+}
+
+a:hover {
+    background-color: #E5E6F5;
+    color: #001A72; /* Cambia el color de fondo al pasar el cursor sobre el enlace */
+}

@@ -1,0 +1,30 @@
+<!DOCTYPE html> <!-- Declaración del tipo de documento HTML -->
+<html lang="en"> <!-- Inicio del elemento HTML con atributo de idioma en inglés -->
+<head>
+    <meta charset="UTF-8"> <!-- Especificación de la codificación de caracteres -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Configuración de la vista en dispositivos móviles -->
+    <link rel="stylesheet" href="/css/styles.css"> <!-- Enlace al archivo CSS externo -->
+    <link rel="icon"  type="img/ico" href="/img/icono.ico">
+    <title>Historial PQRS</title> <!-- Título de la página -->
+</head>
+<body class="fondoHistorial">
+    <h1>Historial de PQRS</h1> <!-- Título principal de la página -->
+    <table> <!-- Tabla para mostrar el historial de PQRSSI -->
+        <tr> <!-- Fila de encabezado de la tabla -->
+            <th>ID</th> <!-- Encabezado de columna para el ID -->
+            <th>Date</th> <!-- Encabezado de columna para la fecha -->
+            <th>Status</th> <!-- Encabezado de columna para el estado -->
+            <th>Comment</th> <!-- Encabezado de columna para el comentario -->
+        </tr>
+        <% historial.forEach(h => { %> <!-- Bucle para generar filas de la tabla -->
+        <tr> <!-- Fila de datos -->
+            <td><%= h.id %></td> <!-- Celda para mostrar el ID del elemento del historial -->
+            <td><%= h.fecha %></td> <!-- Celda para mostrar la fecha del elemento del historial -->
+            <td><%= h.estado %></td> <!-- Celda para mostrar el estado del elemento del historial -->
+            <td><%= h.comentario %></td> <!-- Celda para mostrar el comentario del elemento del historial -->
+        </tr>
+        <% }); %> <!-- Fin del bucle -->
+    </table>
+    <a href="/view">Back to PQRS List</a> <!-- Enlace para volver a la lista de PQRSSI -->
+</body>
+</html>

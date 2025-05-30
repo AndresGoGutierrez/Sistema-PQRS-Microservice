@@ -1,0 +1,89 @@
+/* Establece la fuente principal para todo el cuerpo del documento */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9; /* Color de fondo */
+    margin: 0; /* Quita el margen exterior del cuerpo */
+    padding: 0; /* Quita el relleno del cuerpo */
+}
+
+.fondo {
+    background:
+    url(../img/login_fondo.jpeg);
+    background-size: cover;
+    height: 90vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-position:center;
+}
+
+/* Estilos para los encabezados de nivel 1 */
+h1 {
+    color: #333; /* Color del texto */
+    text-align: center; /* Centra el texto */
+    margin-top: 150px; /* Margen superior */
+}
+
+/* Estilos para los formularios */
+form {
+    display: grid;
+    place-items: center;
+    width: 25%; /* Ancho máximo del formulario */
+    height: 50vh;
+    margin: 0 auto; /* Centra el formulario horizontalmente */
+    background-color: #fff; /* Color de fondo del formulario */
+    padding: 20px; /* Relleno interior del formulario */
+    border-radius: 8px; /* Borde redondeado */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    margin-bottom: 10dvh;
+}
+.contenedor{
+    width: 80%;
+}
+
+/* Estilos para las etiquetas */
+label {
+    display: block; /* Muestra las etiquetas como bloques */
+    margin-bottom: 8px; /* Margen inferior */
+    color: #555; /* Color del texto */
+}
+
+/* Estilos para los campos de texto, email y contraseña */
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+    width: calc(100% - 22px); /* Ancho del campo considerando el padding y el borde */
+    padding: 10px; /* Relleno interior */
+    margin-bottom: 20px; /* Margen inferior */
+    border: 1px solid #ccc; /* Borde del campo */
+    border-radius: 4px; /* Borde redondeado */
+    box-sizing: border-box; /* Incluye el padding y el borde en el ancho total */
+}
+
+/* Estilos para el botón de envío */
+button[type="submit"] {
+    background-color: #001A72; /* Color de fondo */
+    color: #fff; /* Color del texto */
+    border: none; /* Sin borde */
+    border-radius: 4px; /* Borde redondeado */
+    padding: 12px 20px; /* Relleno interior */
+    cursor: pointer; /* Cambia el cursor al pasar por encima */
+    display: block; /* Muestra el botón como bloque */
+    margin: 0 auto; /* Centra el botón horizontalmente */
+}
+
+/* Cambia el color de fondo del botón de envío al pasar el cursor sobre él */
+button[type="submit"]:hover {
+    background-color: #E5E6F5;
+    color: #001A72;
+}
+
+/* Estilos para los enlaces */
+a {
+    display: block; /* Muestra los enlaces como bloques */
+    text-align: center; /* Centra el texto */
+    margin-top: 20px; /* Margen superior */
+    color: #007bff; /* Color del texto */
+    text-decoration: none; /* Quita el subrayado */
+}
