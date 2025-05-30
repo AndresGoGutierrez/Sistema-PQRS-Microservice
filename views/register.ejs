@@ -1,30 +1,30 @@
-<!DOCTYPE html> <!-- Declaración del tipo de documento HTML -->
-<html lang="en"> <!-- Inicio del elemento HTML con atributo de idioma en inglés -->
+<!DOCTYPE html> <!-- HTML document type declaration -->
+<html lang="en"> <!-- Start of the HTML element with English language attribute -->
 <head>
-    <meta charset="UTF-8"> <!-- Especificación de la codificación de caracteres -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Configuración de la vista en dispositivos móviles -->
-    <link rel="stylesheet" href="/css/register.css"> <!-- Enlace al archivo CSS externo -->
+    <meta charset="UTF-8"> <!-- Character encoding specification -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Viewport settings for mobile devices -->
+    <link rel="stylesheet" href="/css/register.css"> <!-- Link to external CSS file -->
     <link rel="icon"  type="img/ico" href="/img/icono.ico">
-    <title>Registro</title> <!-- Título de la página -->
+    <title>Registro</title> <!-- Page title -->
 </head>
 <body class="fondo">
-    <h1>Registro</h1> <!-- Título principal de la página -->
-    <form method="POST" action="/register" id="registerForm"> <!-- Formulario para el registro -->
+    <h1>Registro</h1> <!-- Main page heading -->
+    <form method="POST" action="/register" id="registerForm"> <!-- Registration form -->
         <div class="contenedor">
-        <label for="nombre">Nombre:</label> <!-- Etiqueta para el campo de nombre -->
-        <input type="text" name="nombre" id="nombre" required> <!-- Campo de entrada para el nombre -->
+        <label for="nombre">Nombre:</label> <!-- Label for the name field -->
+        <input type="text" name="nombre" id="nombre" required> <!-- Input field for the name -->
         <br>
-        <label for="email">Email:</label> <!-- Etiqueta para el campo de email -->
-        <input type="email" name="email" id="email" required> <!-- Campo de entrada para el email -->
+        <label for="email">Email:</label> <!-- Label for the email field -->
+        <input type="email" name="email" id="email" required> <!-- Input field for the email -->
         <br>
 
-        <label for="contraseña">Contraseña:</label> <!-- Etiqueta para el campo de contraseña -->
-        <input type="password" name="contraseña" id="contraseña" required> <!-- Campo de entrada para la contraseña -->
+        <label for="contraseña">Contraseña:</label> <!-- Label for the password field -->
+        <input type="password" name="contraseña" id="contraseña" required> <!-- Input field for the password -->
         <br>
-        <button type="submit">Registrarse</button> <!-- Botón para enviar el formulario de registro -->
+        <button type="submit">Registrarse</button> <!-- Button to submit the registration form -->
     </div>
     </form>
-    <a href="/login">¿Ya tienes una cuenta? Inicia sesión aquí</a> <!-- Enlace para dirigir al usuario a la página de inicio de sesión -->
+    <a href="/login">¿Ya tienes una cuenta? Inicia sesión aquí</a> <!-- Link to direct the user to the login page -->
 
 </body>
 </html>

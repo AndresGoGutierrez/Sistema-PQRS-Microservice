@@ -1,33 +1,33 @@
-<!DOCTYPE html> <!-- Declaración del tipo de documento HTML -->
-<html lang="en"> <!-- Inicio del elemento HTML con atributo de idioma en inglés -->
+<!DOCTYPE html> <!-- HTML document type declaration -->
+<html lang="en"> <!-- Start of the HTML element with English language attribute -->
 
 <head>
-    <meta charset="UTF-8"> <!-- Especificación de la codificación de caracteres -->
+    <meta charset="UTF-8"> <!-- Character encoding specification -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Configuración de la vista en dispositivos móviles -->
-    <link rel="stylesheet" href="/css/styles.css"> <!-- Enlace al archivo CSS externo -->
+    <!-- Viewport settings for mobile devices -->
+    <link rel="stylesheet" href="/css/styles.css"> <!-- Link to external CSS file -->
     <link rel="icon"  type="img/ico" href="/img/icono.ico">
-    <title>PQRS System</title> <!-- Título de la página -->
+    <title>PQRS System</title> <!-- Page title -->
 </head>
 
 <body class="fondoIndex">
     <div class="contenedor">
-        <h1>Bienvenido al Sistema PQRS</h1> <!-- Título principal de la página -->
-        <% if (nombre && isAdmin) { %> <!-- Condición para verificar si hay un nombre de usuario -->
-            <p>Hola, <%= nombre %>!</p> <!-- Mensaje de bienvenida personalizado -->
-            <a href="/submit">Enviar una PQRS</a> <!-- Enlace para enviar una PQRSSI -->
-            <a href="/view">Ver PQRS</a> <!-- Enlace para ver las PQRSSI -->
-            <a href="/admin">Administrar PQRS</a> <!-- Enlace para ver las PQRSSI -->
-            <a href="/logout">Cerrar Sesión</a> <!-- Enlace para cerrar sesión -->
-            <% } else if (nombre){ %> <!-- Verificar si es usuario normal -->
-                <p>Hola, <%= nombre %>!</p> <!-- Mensaje de bienvenida personalizado -->
-                <a href="/submit">Enviar una PQRS</a> <!-- Enlace para enviar una PQRSSI -->
-                <a href="/view">Ver PQRS</a> <!-- Enlace para ver las PQRSSI -->
-                <a href="/logout">Cerrar Sesión</a> <!-- Enlace para cerrar sesión -->
-                <% } else { %> <!-- Bloque de código para usuarios no autenticados -->
-                    <a href="/login">Iniciar Sesión</a> <!-- Enlace para iniciar sesión -->
-                <a href="/register">Registrarse</a> <!-- Enlace para registrarse -->
-                <% } %> <!-- Fin de la condición -->
+        <h1>Bienvenido al Sistema PQRS</h1> <!-- Main page heading -->
+        <% if (nombre && isAdmin) { %> <!-- Condition to check if there is a username and if user is admin -->
+            <p>Hola, <%= nombre %>!</p> <!-- Personalized welcome message -->
+            <a href="/submit">Enviar una PQRS</a> <!-- Link to submit a PQRS -->
+            <a href="/view">Ver PQRS</a> <!-- Link to view PQRS -->
+            <a href="/admin">Administrar PQRS</a> <!-- Link to manage PQRS -->
+            <a href="/logout">Cerrar Sesión</a> <!-- Link to log out -->
+            <% } else if (nombre){ %> <!-- Check if user is a normal user -->
+                <p>Hola, <%= nombre %>!</p> <!-- Personalized welcome message -->
+                <a href="/submit">Enviar una PQRS</a> <!-- Link to submit a PQRS -->
+                <a href="/view">Ver PQRS</a> <!-- Link to view PQRS -->
+                <a href="/logout">Cerrar Sesión</a> <!-- Link to log out -->
+                <% } else { %> <!-- Block of code for unauthenticated users -->
+                    <a href="/login">Iniciar Sesión</a> <!-- Link to log in -->
+                <a href="/register">Registrarse</a> <!-- Link to register -->
+                <% } %> <!-- End of the condition -->
     </div>
 </body>
 

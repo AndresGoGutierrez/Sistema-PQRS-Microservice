@@ -1,180 +1,177 @@
-const express = require('express'); // Importa el módulo express
-const mysql = require('mysql'); // Importa el módulo mysql
-const path = require('path'); // Importa el módulo path
-const bodyParser = require('body-parser'); // Importa el módulo body-parser
-const session = require('express-session'); // Importa el módulo express-session
-const bcrypt = require('bcrypt'); // Importa el módulo bcrypt para hashing de contraseñas
-const config = require('./config'); // Importa el archivo config.js para las credenciales de la base de datos
+const express = require('express'); // Import the express module
+const mysql = require('mysql'); // Import the mysql module
+const path = require('path'); // Import the path module
+const bodyParser = require('body-parser'); // Import the body-parser module
+const session = require('express-session'); // Import the express-session module
+const bcrypt = require('bcrypt'); // Import the bcrypt module for password hashing
+const config = require('./config'); // Import the config.js file for database credentials
 
-const app = express(); // Crea una instancia de express
+const app = express(); // Create an instance of express
 
-const db = mysql.createConnection(config); // Crea una conexión a la base de datos usando la configuración del archivo config.js
+const db = mysql.createConnection(config); // Create a database connection using the config.js settings
 
-db.connect(err => { // Conecta a la base de datos
+db.connect(err => { // Connect to the database
     if (err) {
         console.error('Error connecting to the database:', err.stack);
         return;
     }
-    console.log('Connected to the database'); // Mensaje de confirmación de conexión exitosa
+    console.log('Connected to the database'); // Confirmation message for successful connection
 });
 
-app.set('view engine', 'ejs'); // Configura el motor de plantillas a EJS
-app.set('views', path.join(__dirname, 'views')); // Configura la ruta de las vistas
+app.set('view engine', 'ejs'); // Set the template engine to EJS
+app.set('views', path.join(__dirname, 'views')); // Set the views directory path
 
-app.use(bodyParser.urlencoded({ extended: false })); // Configura el body-parser para analizar datos URL-encoded
-app.use(express.static(path.join(__dirname, 'public'))); // Configura la carpeta de archivos estáticos
+app.use(bodyParser.urlencoded({ extended: false })); // Configure body-parser to parse URL-encoded data
+app.use(express.static(path.join(__dirname, 'public'))); // Set the static files folder
 
-app.use(session({ // Configura las sesiones
-    secret: 'your_secret_key', // Llave secreta para firmar la sesión
-    resave: false, // No guarda la sesión si no hay cambios
-    saveUninitialized: true // Guarda una sesión nueva y vacía
+app.use(session({ // Configure sessions
+    secret: 'your_secret_key', // Secret key to sign the session
+    resave: false, // Do not save session if unmodified
+    saveUninitialized: true // Save new but uninitialized sessions
 }));
 
-
-
-// Ruta principal
+// Main route
 app.get('/', (req, res) => {
-    res.render('index', { nombre: req.session.nombre, isAdmin: req.session.isAdmin }); // Renderiza la vista index y pasa el nombre de usuario de la sesión
+    res.render('index', { nombre: req.session.nombre, isAdmin: req.session.isAdmin }); // Render index view and pass session username
 });
 
-// Ruta de registro
+// Register route
 app.get('/register', (req, res) => {
-    res.render('register'); // Renderiza la vista de registro
+    res.render('register'); // Render the register view
 });
 
 app.post('/register', async (req, res) => {
-    const { nombre, email, contraseña } = req.body; // Obtiene los datos del formulario
-    const hashedPassword = await bcrypt.hash(contraseña, 10); // Hashea la contraseña
+    const { nombre, email, contraseña } = req.body; // Get form data
+    const hashedPassword = await bcrypt.hash(contraseña, 10); // Hash the password
 
     var contraseñaRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()+,.?":{}|<>]).{8,}$/;
 
-
     if (!contraseñaRegex.test(contraseña)) {
-        return res.send("La contraseña debe tener al menos 8 caracteres y contener al menos una letra mayúscula, una letra minúscula, un número y un carácter especial.")
+        return res.send("Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character.")
     } else {
         db.query('SELECT * FROM usuarios WHERE email = ?', [email], (err, results) => {
             if (err) throw err;
             if (results.length > 0) {
-                return res.send('El email ya está registrado'); // Si el email ya existe, envía un mensaje
+                return res.send('Email is already registered'); // If email exists, send a message
             } else {
                 db.query('INSERT INTO usuarios (nombre, email, contraseña) VALUES (?, ?, ?)',
                     [nombre, email, hashedPassword],
                     (err, result) => {
                         if (err) throw err;
-                        res.redirect('/login'); // Redirige a la página de login
+                        res.redirect('/login'); // Redirect to login page
                     });
             }
         });
     }
 });
 
-// Ruta de inicio de sesión
+// Login route
 app.get('/login', (req, res) => {
-    res.render('login'); // Renderiza la vista de login
+    res.render('login'); // Render the login view
 });
 
 app.post('/login', (req, res) => {
-    const { email, contraseña } = req.body; // Obtiene los datos del formulario
+    const { email, contraseña } = req.body; // Get form data
     db.query('SELECT * FROM usuarios WHERE email = ?', [email], async (err, results) => {
         if (err) throw err;
         if (results.length > 0) {
             const user = results[0];
-            if (await bcrypt.compare(contraseña, user.contraseña)) { // Compara la contraseña hasheada
-                req.session.loggedin = true; // Marca la sesión como iniciada
-                req.session.nombre = user.nombre; // Guarda el nombre del usuario en la sesión
-                req.session.userId = user.id; // Guarda el ID del usuario en la sesión
-                req.session.isAdmin = user.is_admin; // Guarda si el usuario es administrador en la sesión
-                res.redirect('/'); // Redirige a la página principal
+            if (await bcrypt.compare(contraseña, user.contraseña)) { // Compare hashed password
+                req.session.loggedin = true; // Mark session as logged in
+                req.session.nombre = user.nombre; // Save username in session
+                req.session.userId = user.id; // Save user ID in session
+                req.session.isAdmin = user.is_admin; // Save admin status in session
+                res.redirect('/'); // Redirect to main page
             } else {
-                res.send('Contraseña incorrecta!'); // Si la contraseña es incorrecta, envía un mensaje
+                res.send('Incorrect password!'); // If password is wrong, send message
             }
         } else {
-            res.send('Usuario no encontrado!'); // Si el usuario no se encuentra, envía un mensaje
+            res.send('User not found!'); // If user not found, send message
         }
     });
 });
 
-// Ruta de administrador
+// Admin route
 app.get('/admin', (req, res) => {
-    if (!req.session.loggedin || !req.session.isAdmin) { // Verifica si el usuario está logueado y es administrador
-        return res.redirect('/login'); // Si no, redirige a la página de login
+    if (!req.session.loggedin || !req.session.isAdmin) { // Check if user is logged in and is admin
+        return res.redirect('/login'); // Otherwise, redirect to login page
     }
-    db.query('SELECT * FROM pqrssi', (err, results) => { // Consulta todas las PQRSSI
+    db.query('SELECT * FROM pqrssi', (err, results) => { // Query all PQRSSI
         if (err) throw err;
-        res.render('admin', { pqrssi: results }); // Renderiza la vista de administrador con las PQRSSI
+        res.render('admin', { pqrssi: results }); // Render admin view with PQRSSI
     });
 });
 
 app.post('/admin/change-status', (req, res) => {
-    if (!req.session.loggedin || !req.session.isAdmin) { // Verifica si el usuario está logueado y es administrador
-        return res.redirect('/login'); // Si no, redirige a la página de login
+    if (!req.session.loggedin || !req.session.isAdmin) { // Check if user is logged in and is admin
+        return res.redirect('/login'); // Otherwise, redirect to login page
     }
-    const { pqrssi_id, estado_id, comentario } = req.body; // Obtiene los datos del formulario
-    const comentarioCompleto = `Estado cambiado por administrador: ${comentario}`; // Prepara el comentario completo
+    const { pqrssi_id, estado_id, comentario } = req.body; // Get form data
+    const comentarioCompleto = `Status changed by admin: ${comentario}`; // Prepare full comment
 
-    console.log('Datos recibidos:', { pqrssi_id, estado_id, comentario }); // Para depuración
+    console.log('Received data:', { pqrssi_id, estado_id, comentario }); // For debugging
 
-    db.query('UPDATE pqrssi SET estado_id = ? WHERE id = ?', [estado_id, pqrssi_id], (err) => { // Actualiza el estado de la PQRSSI
+    db.query('UPDATE pqrssi SET estado_id = ? WHERE id = ?', [estado_id, pqrssi_id], (err) => { // Update PQRSSI status
         if (err) throw err;
 
         db.query('INSERT INTO historial (pqrssi_id, estado_id, comentario) VALUES (?, ?, ?)',
             [pqrssi_id, estado_id, comentarioCompleto],
             (err) => {
                 if (err) throw err;
-                console.log('Comentario almacenado:', comentarioCompleto); // Para depuración
-                res.redirect('/admin'); // Redirige a la página de administrador
+                console.log('Stored comment:', comentarioCompleto); // For debugging
+                res.redirect('/admin'); // Redirect to admin page
             }
         );
     });
 });
 
-// Ruta de cierre de sesión
+// Logout route
 app.get('/logout', (req, res) => {
-    req.session.destroy(); // Destruye la sesión
-    res.redirect('/'); // Redirige a la página principal
+    req.session.destroy(); // Destroy session
+    res.redirect('/'); // Redirect to main page
 });
 
-// Ruta para enviar una PQRSSI
+// Route to submit a PQRSSI
 app.get('/submit', (req, res) => {
-    if (!req.session.loggedin) { // Verifica si el usuario está logueado
-        return res.redirect('/login'); // Si no, redirige a la página de login
+    if (!req.session.loggedin) { // Check if user is logged in
+        return res.redirect('/login'); // Otherwise, redirect to login page
     }
-    db.query('SELECT * FROM categorias', (err, results) => { // Consulta todas las categorías
+    db.query('SELECT * FROM categorias', (err, results) => { // Query all categories
         if (err) throw err;
-        res.render('submit', { categorias: results }); // Renderiza la vista de enviar PQRSSI con las categorías
+        res.render('submit', { categorias: results }); // Render submit view with categories
     });
 });
 
 app.post('/submit', (req, res) => {
-    if (!req.session.loggedin) { // Verifica si el usuario está logueado
-        return res.redirect('/login'); // Si no, redirige a la página de login
+    if (!req.session.loggedin) { // Check if user is logged in
+        return res.redirect('/login'); // Otherwise, redirect to login page
     }
-    const { tipo, descripcion, categoria_id } = req.body; // Obtiene los datos del formulario
-    const usuario_id = req.session.userId; // Usa el ID del usuario autenticado
-    const estado_id = 1; // Estado inicial de la PQRSSI
+    const { tipo, descripcion, categoria_id } = req.body; // Get form data
+    const usuario_id = req.session.userId; // Use authenticated user ID
+    const estado_id = 1; // Initial PQRSSI status
 
     db.query('INSERT INTO pqrssi (tipo, descripcion, usuario_id, estado_id, categoria_id) VALUES (?, ?, ?, ?, ?)',
         [tipo, descripcion, usuario_id, estado_id, categoria_id],
         (err, result) => {
             if (err) throw err;
 
-            const pqrssi_id = result.insertId; // Obtiene el ID de la PQRSSI recién creada
+            const pqrssi_id = result.insertId; // Get newly created PQRSSI ID
 
             db.query('INSERT INTO historial (pqrssi_id, estado_id, comentario) VALUES (?, ?, ?)',
-                [pqrssi_id, estado_id, 'Solicitud creada'],
+                [pqrssi_id, estado_id, 'Request created'],
                 (err) => {
                     if (err) throw err;
-                    res.redirect('/'); // Redirige a la página principal
+                    res.redirect('/'); // Redirect to main page
                 }
             );
         }
     );
 });
 
-// Ruta para ver las PQRSSI
+// Route to view PQRSSI
 app.get('/view', (req, res) => {
-    if (!req.session.loggedin) { // Verifica si el usuario está logueado
-        return res.redirect('/login'); // Si no, redirige a la página de login
+    if (!req.session.loggedin) { // Check if user is logged in
+        return res.redirect('/login'); // Otherwise, redirect to login page
     }
     db.query(`
         SELECT p.id, p.tipo, p.descripcion, e.nombre AS estado, p.fecha, c.nombre AS categoria, u.nombre AS usuario
@@ -184,16 +181,16 @@ app.get('/view', (req, res) => {
         JOIN usuarios u ON p.usuario_id = u.id
     `, (err, results) => {
         if (err) throw err;
-        res.render('view', { pqrssi: results }); // Renderiza la vista de ver PQRSSI con los resultados de la consulta
+        res.render('view', { pqrssi: results }); // Render view PQRSSI with query results
     });
 });
 
-// Ruta para ver el historial de una PQRSSI
+// Route to view PQRSSI history
 app.get('/historial/:pqrssi_id', (req, res) => {
-    if (!req.session.loggedin) { // Verifica si el usuario está logueado
-        return res.redirect('/login'); // Si no, redirige a la página de login
+    if (!req.session.loggedin) { // Check if user is logged in
+        return res.redirect('/login'); // Otherwise, redirect to login page
     }
-    const pqrssi_id = req.params.pqrssi_id; // Obtiene el ID de la PQRSSI de los parámetros de la URL
+    const pqrssi_id = req.params.pqrssi_id; // Get PQRSSI ID from URL params
 
     db.query(`
         SELECT h.id, h.fecha, e.nombre AS estado, h.comentario
@@ -202,11 +199,11 @@ app.get('/historial/:pqrssi_id', (req, res) => {
         WHERE h.pqrssi_id = ?
     `, [pqrssi_id], (err, results) => {
         if (err) throw err;
-        res.render('historial', { historial: results }); // Renderiza la vista de historial con los resultados de la consulta
+        res.render('historial', { historial: results }); // Render history view with query results
     });
 });
 
-// Inicia el servidor en el puerto 3000
+// Start the server on port 3000
 app.listen(3000, () => {
-    console.log('Server running on port 3000'); // Mensaje de confirmación de que el servidor está corriendo
+    console.log('Server running on port 3000'); // Confirmation message that the server is running
 });

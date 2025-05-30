@@ -1,21 +1,21 @@
-/* Reset de Estilos */
+/* Style Reset */
 * {
-    margin: 0; /* Elimina el margen exterior */
-    padding: 0; /* Elimina el relleno */
-    box-sizing: border-box; /* Hace que el modelo de caja incluya el padding y el borde */
+    margin: 0; /* Removes outer margin */
+    padding: 0; /* Removes padding */
+    box-sizing: border-box; /* Makes box model include padding and border */
 }
 
-/* Estilos Generales */
+/* General Styles */
 body {
-    font-family: Arial, sans-serif; /* Se establece la fuente */
-    background-color: #f2f2f2; /* Color de fondo */
-    display: flex; /* Se usa el modelo de caja flexible */
+    font-family: Arial, sans-serif; /* Sets the font */
+    background-color: #f2f2f2; /* Background color */
+    display: flex; /* Uses flexbox model */
     flex-direction: column;
-    justify-content: center; /* Se centra horizontalmente */
-    align-items: center; /* Se centra verticalmente */
+    justify-content: center; /* Centers horizontally */
+    align-items: center; /* Centers vertically */
     height: 100vh;
     padding-left: 100px;
-    padding-right: 100px; /* El cuerpo ocupa toda la altura de la ventana */
+    padding-right: 100px; /* Body takes full height of the viewport */
 }
 
 .fondoIndex {
@@ -52,156 +52,156 @@ body {
 }
 
 .contenedor {
-    background-color: #fff; /* Color de fondo del formulario */
-    padding: 20px; /* Relleno interior del formulario */
-    border-radius: 10px; /* Bordes redondeados */
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Sombra */
-    max-width: 350px; /* Ancho máximo del formulario */
-    width: 100%; /* Se ajusta al ancho disponible */
+    background-color: #fff; /* Form background color */
+    padding: 20px; /* Inner padding of the form */
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Shadow */
+    max-width: 350px; /* Maximum width of the form */
+    width: 100%; /* Adjusts to available width */
 }
 
 .container {
-    width: 80%; /* Ancho del contenedor */
-    margin: auto; /* Centra el contenedor horizontalmente */
-    overflow: hidden; /* Evita que el contenido sobresalga del contenedor */
+    width: 80%; /* Container width */
+    margin: auto; /* Centers the container horizontally */
+    overflow: hidden; /* Prevents content from overflowing container */
 }
 
-/* Encabezados */
+/* Headings */
 h1 {
-    color: #001A72  ; /* Color del encabezado */
-    margin-bottom: 20px; /* Margen inferior */
-    text-align: center; /* Centra el texto */
-    font-size: 36px; /* Tamaño de fuente */
-    text-shadow: 1px 1px 1px #ccc; /* Sombra del texto */
+    color: #001A72  ; /* Heading color */
+    margin-bottom: 20px; /* Bottom margin */
+    text-align: center; /* Centers the text */
+    font-size: 36px; /* Font size */
+    text-shadow: 1px 1px 1px #ccc; /* Text shadow */
 }
 
-/* Enlaces */
+/* Links */
 a {
     text-align: center;
-    text-decoration: none; /* Quita el subrayado */
-    color: white; /* Color del texto */
-    display: flex; /* Muestra los enlaces como bloques */
+    text-decoration: none; /* Removes underline */
+    color: white; /* Text color */
+    display: flex; /* Displays links as blocks */
     flex-direction: column;
-    padding: 10px 20px; /* Relleno */
-    background-color: #001A72 ; /* Color de fondo */
-    border-radius: 5px; /* Borde redondeado */
-    transition: background-color 0.3s ease; /* Transición suave */
-    margin: 10px; /* Margen */
+    padding: 10px 20px; /* Padding */
+    background-color: #001A72 ; /* Background color */
+    border-radius: 5px; /* Rounded border */
+    transition: background-color 0.3s ease; /* Smooth transition */
+    margin: 10px; /* Margin */
 }
 
 a:hover {
     background-color: #E5E6F5;
-    color: #001A72; /* Cambia el color de fondo al pasar el cursor sobre el enlace */
+    color: #001A72; /* Changes background color when hovering over the link */
 }
 
-/* Botones */
+/* Buttons */
 button, .button {
-    display: inline-block; /* Muestra los botones como bloques */
-    background: #001A72; /* Color de fondo */
-    color: #fff; /* Color del texto */
-    border: none; /* Sin borde */
-    padding: 10px 20px; /* Relleno */
-    cursor: pointer; /* Cursor al pasar por encima */
-    border-radius: 5px; /* Borde redondeado */
-    transition: background 0.3s ease; /* Transición suave */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra */
-    margin-right: 10px; /* Margen derecho */
+    display: inline-block; /* Displays buttons as blocks */
+    background: #001A72; /* Background color */
+    color: #fff; /* Text color */
+    border: none; /* No border */
+    padding: 10px 20px; /* Padding */
+    cursor: pointer; /* Cursor on hover */
+    border-radius: 5px; /* Rounded border */
+    transition: background 0.3s ease; /* Smooth transition */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Shadow */
+    margin-right: 10px; /* Right margin */
 }
 
 button:last-child, .button:last-child {
-    margin-right: 0; /* Elimina el margen derecho del último botón en una fila */
+    margin-right: 0; /* Removes right margin from the last button in a row */
 }
 
 button:hover, .button:hover {
     background-color: #E5E6F5;
-    color: #001A72; /* Cambia el color de fondo al pasar el cursor sobre el botón */
+    color: #001A72; /* Changes background color when hovering over the button */
 }
 
-/* Formularios */
+/* Forms */
 input[type="text"],
 input[type="email"],
 select,
 textarea {
-    width: 100%; /* Ancho completo */
-    padding: 10px; /* Relleno */
-    margin-bottom: 10px; /* Margen inferior */
-    border-radius: 5px; /* Borde redondeado */
-    border: 1px solid #ccc; /* Borde */
+    width: 100%; /* Full width */
+    padding: 10px; /* Padding */
+    margin-bottom: 10px; /* Bottom margin */
+    border-radius: 5px; /* Rounded border */
+    border: 1px solid #ccc; /* Border */
 }
 
 textarea {
-    height: 100px; /* Altura */
+    height: 100px; /* Height */
 }
 
-/* Estilos para la tabla */
+/* Table styles */
 table {
-    width: 100%; /* Ancho completo */
-    border-spacing: 0; /* Espacio entre bordes */
-    border-collapse: collapse; /* Colapsa los bordes */
-    margin-bottom: 20px; /* Margen inferior */
+    width: 100%; /* Full width */
+    border-spacing: 0; /* Border spacing */
+    border-collapse: collapse; /* Collapse borders */
+    margin-bottom: 20px; /* Bottom margin */
 }
 
 th, td {
-    padding: 12px; /* Relleno */
-    border: 1px solid #ccc; /* Borde */
+    padding: 12px; /* Padding */
+    border: 1px solid #ccc; /* Border */
 }
 
 th {
-    background-color: #001A72; /* Color de fondo del encabezado */
-    color: #fff; /* Color del texto */
+    background-color: #001A72; /* Header background color */
+    color: #fff; /* Text color */
 }
 
 td {
-    text-align: left; /* Alineación del texto */
+    text-align: left; /* Text alignment */
 }
 
 tr:nth-child(even) {
-    background-color: #f2f2f2b3; /* Color de fondo para filas pares */
+    background-color: #f2f2f2b3; /* Background color for even rows */
 }
 tr:nth-child(odd) {
-    background-color: #e3e3ecb3; /* Color de fondo para filas pares */
+    background-color: #e3e3ecb3; /* Background color for odd rows */
 }
 
 tr:hover {
-    background-color: #ddd; /* Cambia el color de fondo al pasar el cursor sobre la fila */
+    background-color: #ddd; /* Changes background color on row hover */
 }
 
-/* Tarjetas */
+/* Cards */
 .card {
-    background: #fff; /* Color de fondo */
-    border-radius: 5px; /* Borde redondeado */
-    padding: 20px; /* Relleno */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra */
-    margin-bottom: 20px; /* Margen inferior */
+    background: #fff; /* Background color */
+    border-radius: 5px; /* Rounded border */
+    padding: 20px; /* Padding */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Shadow */
+    margin-bottom: 20px; /* Bottom margin */
 }
 
-/* Mensajes de Error */
+/* Error Messages */
 .error-msg {
-    background: #8b0000; /* Color de fondo */
-    color: #fff; /* Color del texto */
-    padding: 10px; /* Relleno */
-    border-radius: 5px; /* Borde redondeado */
-    margin-bottom: 10px; /* Margen inferior */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra */
+    background: #8b0000; /* Background color */
+    color: #fff; /* Text color */
+    padding: 10px; /* Padding */
+    border-radius: 5px; /* Rounded border */
+    margin-bottom: 10px; /* Bottom margin */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Shadow */
 }
 
-/* Mensajes de Éxito */
+/* Success Messages */
 .success-msg {
-    background: #556b2f; /* Color de fondo */
-    color: #fff; /* Color del texto */
-    padding: 10px; /* Relleno */
-    border-radius: 5px; /* Borde redondeado */
-    margin-bottom: 10px; /* Margen inferior */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra */
+    background: #556b2f; /* Background color */
+    color: #fff; /* Text color */
+    padding: 10px; /* Padding */
+    border-radius: 5px; /* Rounded border */
+    margin-bottom: 10px; /* Bottom margin */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Shadow */
 }
 
-/* Pie de Página */
+/* Footer */
 footer {
-    background: #4b0082; /* Color de fondo */
-    color: #fff; /* Color del texto */
-    text-align: center; /* Centra el texto */
-    padding: 10px; /* Relleno */
-    position: fixed; /* Fija la posición */
-    bottom: 0; /* Abajo */
-    width: 100%; /* Ancho completo */
+    background: #4b0082; /* Background color */
+    color: #fff; /* Text color */
+    text-align: center; /* Centers the text */
+    padding: 10px; /* Padding */
+    position: fixed; /* Fixed position */
+    bottom: 0; /* At the bottom */
+    width: 100%; /* Full width */
 }

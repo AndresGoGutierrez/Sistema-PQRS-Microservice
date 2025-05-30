@@ -1,7 +1,7 @@
-/* Establece la fuente principal para todo el cuerpo del documento */
+/* Sets the main font for the entire document body */
 body {
     font-family: Arial, sans-serif;
-    background-color: white; /* Cambia el color de fondo a blanco */
+    background-color: white; /* Changes the background color to white */
     display:  flex;
     justify-content: center;
     align-items: center;
@@ -12,124 +12,123 @@ body {
     background-position:center;
 }
 
-/* Estilos para los encabezados de nivel 1 */
+/* Styles for level 1 headings */
 h1 {
-    color: #333; /* Establece el color del texto de los encabezados h1 */
+    color: #333; /* Sets the text color for h1 headings */
 }
 
-/* Estilos para las tablas */
+/* Styles for tables */
 table {
-    width: 70%; /* La tabla ocupa el 100% del ancho disponible */
-    border-collapse: collapse; /* Fusiona los bordes de las celdas de la tabla */
-    margin-top: 20px; /* Margen superior de la tabla */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Agrega una sombra suave */ 
+    width: 70%; /* The table takes up 70% of the available width */
+    border-collapse: collapse; /* Merges the borders of table cells */
+    margin-top: 20px; /* Top margin for the table */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Adds a soft shadow */
 }
 
-
-/* Estilos para las celdas de las tablas */
+/* Styles for table cells */
 th, td {
-    padding: 12px; /* Añade espacio interno a las celdas */
-    text-align: left; /* Alinea el texto a la izquierda */
-    border-bottom: 1px solid #ddd; /* Agrega un borde inferior a las celdas */
+    padding: 12px; /* Adds padding inside the cells */
+    text-align: left; /* Aligns text to the left */
+    border-bottom: 1px solid #ddd; /* Adds a bottom border to the cells */
 }
 
-/* Estilos para las celdas de encabezado de las tablas */
+/* Styles for table header cells */
 th {
-    background-color: #001A72; /* Color de fondo azul */
-    color: #fcfcfc; /* Color del texto */
-    padding: 12px; /* Añade espacio interno a las celdas */
-    text-align: left; /* Alinea el texto a la izquierda */
-    border-bottom: 1px solid #ddd; /* Agrega un borde inferior a las celdas */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Agrega un efecto de sombra */
+    background-color: #001A72; /* Blue background color */
+    color: #fcfcfc; /* Text color */
+    padding: 12px; /* Adds padding inside the cells */
+    text-align: left; /* Aligns text to the left */
+    border-bottom: 1px solid #ddd; /* Adds a bottom border to the cells */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Adds a shadow effect */
 }
 
-/* Estilos para los formularios */
+/* Styles for forms */
 form {
-    margin-bottom: 20px; /* Margen inferior para los formularios */
+    margin-bottom: 20px; /* Bottom margin for forms */
 }
 
-/* Estilos para el campo de comentario */
+/* Styles for the comment field */
 textarea {
-    width: calc(100% - 22px); /* Ancho del campo de comentario */
-    padding: 8px; /* Añade espacio interno alrededor del texto */
-    margin-top: 5px; /* Margen superior del campo de comentario */
-    border: 1px solid #ccc; /* Borde del campo de comentario */
-    border-radius: 4px; /* Borde redondeado del campo de comentario */
+    width: calc(100% - 22px); /* Width of the comment field */
+    padding: 8px; /* Adds padding around the text */
+    margin-top: 5px; /* Top margin of the comment field */
+    border: 1px solid #ccc; /* Border of the comment field */
+    border-radius: 4px; /* Rounded border of the comment field */
     resize: none;
 }
 
-/* Estilos para los botones */
+/* Styles for buttons */
 button {
-    background-color: #001A72; /* Color de fondo del botón */
-    color: white; /* Color del texto del botón */
-    padding: 12px 20px; /* Añade espacio interno alrededor del texto */
-    border: none; /* Sin borde */
-    border-radius: 4px; /* Borde redondeado */
-    cursor: pointer; /* Cambia el cursor al pasar por encima */
-    margin-top: 10px; /* Margen superior */
+    background-color: #001A72; /* Button background color */
+    color: white; /* Button text color */
+    padding: 12px 20px; /* Adds padding around the text */
+    border: none; /* No border */
+    border-radius: 4px; /* Rounded border */
+    cursor: pointer; /* Changes cursor on hover */
+    margin-top: 10px; /* Top margin */
 }
 
-/* Cambia el color de fondo del botón al pasar el cursor sobre él */
+/* Changes the button background color on hover */
 button:hover {
     background-color: #E5E6F5;
     color: #001A72;
 }
 
 tr:nth-child(even) {
-    background-color: #f2f2f2b3; /* Color de fondo para filas pares */
+    background-color: #f2f2f2b3; /* Background color for even rows */
 }
 tr:nth-child(odd) {
-    background-color: #e3e3ecb3; /* Color de fondo para filas pares */
+    background-color: #e3e3ecb3; /* Background color for odd rows */
 }
 
-/* Estilos para las listas desplegables */
+/* Styles for dropdown lists */
 select {
-    width: calc(100% - 22px); /* Ancho de la lista desplegable */
-    padding: 10px; /* Añade espacio interno alrededor del texto */
-    border: 1px solid #ccc; /* Borde de la lista desplegable */
-    border-radius: 4px; /* Borde redondeado */
-    background-color: white; /* Color de fondo */
-    font-size: 16px; /* Tamaño del texto */
-    appearance: none; /* Elimina el estilo predeterminado del sistema operativo */
-    -webkit-appearance: none; /* Para navegadores basados en WebKit */
-    -moz-appearance: none; /* Para navegadores basados en Gecko */
-    background-image: url('data:image/svg+xml;utf8,<svg fill="%23333" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="24px" height="24px"><path d="M7 10l5 5 5-5H7z"/></svg>'); /* Agrega una flecha desplegable */
-    background-repeat: no-repeat; /* No se repite la imagen de fondo */
-    background-position: right 10px center; /* Posición de la imagen de fondo */
+    width: calc(100% - 22px); /* Width of the dropdown list */
+    padding: 10px; /* Adds padding around the text */
+    border: 1px solid #ccc; /* Border of the dropdown list */
+    border-radius: 4px; /* Rounded border */
+    background-color: white; /* Background color */
+    font-size: 16px; /* Text size */
+    appearance: none; /* Removes default OS styling */
+    -webkit-appearance: none; /* For WebKit-based browsers */
+    -moz-appearance: none; /* For Gecko-based browsers */
+    background-image: url('data:image/svg+xml;utf8,<svg fill="%23333" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="24px" height="24px"><path d="M7 10l5 5 5-5H7z"/></svg>'); /* Adds a dropdown arrow */
+    background-repeat: no-repeat; /* Prevents background image repetition */
+    background-position: right 10px center; /* Background image position */
 }
 
-/* Estilos para el botón de cerrar sesión */
+/* Styles for the logout button */
 .logout-button {
-    background-color: #001A72; /* Color de fondo del botón */
-    color: white; /* Color del texto del botón */
-    padding: 12px 20px; /* Añade espacio interno alrededor del texto */
-    border: none; /* Sin borde */
-    border-radius: 4px; /* Borde redondeado */
-    cursor: pointer; /* Cambia el cursor al pasar por encima */
-    margin-top: 20px; /* Margen superior */
-    display: block; /* Muestra el botón como un bloque */
-    width: 100%; /* Ancho del botón */
-    box-sizing: border-box; /* Incluye el padding y el borde en el ancho y alto total */
+    background-color: #001A72; /* Button background color */
+    color: white; /* Button text color */
+    padding: 12px 20px; /* Adds padding around the text */
+    border: none; /* No border */
+    border-radius: 4px; /* Rounded border */
+    cursor: pointer; /* Changes cursor on hover */
+    margin-top: 20px; /* Top margin */
+    display: block; /* Displays the button as a block */
+    width: 100%; /* Button width */
+    box-sizing: border-box; /* Includes padding and border in total width and height */
 }
 
-/* Cambia el color de fondo del botón de cerrar sesión al pasar el cursor sobre él */
+/* Changes the logout button background color on hover */
 .logout-button:hover {
     background-color: #E5E6F5;
     color: #001A72;
 }
 
 a {
-    text-decoration: none; /* Quita el subrayado */
-    color: #fbf9fc; /* Color del texto */
-    display: inline-block; /* Muestra los enlaces como bloques */
-    padding: 10px 20px; /* Relleno */
-    background-color: #001A72; /* Color de fondo */
-    border-radius: 5px; /* Borde redondeado */
-    transition: background-color 0.3s ease; /* Transición suave */
-    margin: 10px; /* Margen */
+    text-decoration: none; /* Removes underline */
+    color: #fbf9fc; /* Text color */
+    display: inline-block; /* Displays links as blocks */
+    padding: 10px 20px; /* Padding */
+    background-color: #001A72; /* Background color */
+    border-radius: 5px; /* Rounded border */
+    transition: background-color 0.3s ease; /* Smooth transition */
+    margin: 10px; /* Margin */
 }
 
 a:hover {
     background-color: #E5E6F5;
-    color: #001A72; /* Cambia el color de fondo al pasar el cursor sobre el enlace */
+    color: #001A72; /* Changes background color on link hover */
 }

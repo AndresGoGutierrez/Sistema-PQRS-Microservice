@@ -1,9 +1,9 @@
-/* Establece la fuente principal para todo el cuerpo del documento */
+/* Sets the main font for the entire body of the document */
 body {
     font-family: Arial, sans-serif;
-    background-color: #f9f9f9; /* Color de fondo */
-    margin: 0; /* Quita el margen exterior del cuerpo */
-    padding: 0; /* Quita el relleno del cuerpo */
+    background-color: #f9f9f9; /* Background color */
+    margin: 0; /* Removes the body's outer margin */
+    padding: 0; /* Removes the body's padding */
 }
 
 .fondo {
@@ -18,72 +18,72 @@ body {
     background-position:center;
 }
 
-/* Estilos para los encabezados de nivel 1 */
+/* Styles for level 1 headers */
 h1 {
-    color: #333; /* Color del texto */
-    text-align: center; /* Centra el texto */
-    margin-top: 150px; /* Margen superior */
+    color: #333; /* Text color */
+    text-align: center; /* Centers the text */
+    margin-top: 150px; /* Top margin */
 }
 
-/* Estilos para los formularios */
+/* Styles for forms */
 form {
     display: grid;
     place-items: center;
-    width: 25%; /* Ancho máximo del formulario */
+    width: 25%; /* Maximum form width */
     height: 50vh;
-    margin: 0 auto; /* Centra el formulario horizontalmente */
-    background-color: #fff; /* Color de fondo del formulario */
-    padding: 20px; /* Relleno interior del formulario */
-    border-radius: 8px; /* Borde redondeado */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    margin: 0 auto; /* Centers the form horizontally */
+    background-color: #fff; /* Form background color */
+    padding: 20px; /* Inner padding of the form */
+    border-radius: 8px; /* Rounded border */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Soft shadow */
     margin-bottom: 10dvh;
 }
 .contenedor{
     width: 80%;
 }
 
-/* Estilos para las etiquetas */
+/* Styles for labels */
 label {
-    display: block; /* Muestra las etiquetas como bloques */
-    margin-bottom: 8px; /* Margen inferior */
-    color: #555; /* Color del texto */
+    display: block; /* Displays labels as blocks */
+    margin-bottom: 8px; /* Bottom margin */
+    color: #555; /* Text color */
 }
 
-/* Estilos para los campos de texto, email y contraseña */
+/* Styles for text, email, and password fields */
 input[type="text"],
 input[type="email"],
 input[type="password"] {
-    width: calc(100% - 22px); /* Ancho del campo considerando el padding y el borde */
-    padding: 10px; /* Relleno interior */
-    margin-bottom: 20px; /* Margen inferior */
-    border: 1px solid #ccc; /* Borde del campo */
-    border-radius: 4px; /* Borde redondeado */
-    box-sizing: border-box; /* Incluye el padding y el borde en el ancho total */
+    width: calc(100% - 22px); /* Field width considering padding and border */
+    padding: 10px; /* Inner padding */
+    margin-bottom: 20px; /* Bottom margin */
+    border: 1px solid #ccc; /* Field border */
+    border-radius: 4px; /* Rounded border */
+    box-sizing: border-box; /* Includes padding and border in total width */
 }
 
-/* Estilos para el botón de envío */
+/* Styles for the submit button */
 button[type="submit"] {
-    background-color: #001A72; /* Color de fondo */
-    color: #fff; /* Color del texto */
-    border: none; /* Sin borde */
-    border-radius: 4px; /* Borde redondeado */
-    padding: 12px 20px; /* Relleno interior */
-    cursor: pointer; /* Cambia el cursor al pasar por encima */
-    display: block; /* Muestra el botón como bloque */
-    margin: 0 auto; /* Centra el botón horizontalmente */
+    background-color: #001A72; /* Background color */
+    color: #fff; /* Text color */
+    border: none; /* No border */
+    border-radius: 4px; /* Rounded border */
+    padding: 12px 20px; /* Inner padding */
+    cursor: pointer; /* Changes cursor on hover */
+    display: block; /* Displays the button as a block */
+    margin: 0 auto; /* Centers the button horizontally */
 }
 
-/* Cambia el color de fondo del botón de envío al pasar el cursor sobre él */
+/* Changes submit button background color on hover */
 button[type="submit"]:hover {
     background-color: #E5E6F5;
     color: #001A72;
 }
 
-/* Estilos para los enlaces */
+/* Styles for links */
 a {
-    display: block; /* Muestra los enlaces como bloques */
-    text-align: center; /* Centra el texto */
-    margin-top: 20px; /* Margen superior */
-    color: #007bff; /* Color del texto */
-    text-decoration: none; /* Quita el subrayado */
+    display: block; /* Displays links as blocks */
+    text-align: center; /* Centers the text */
+    margin-top: 20px; /* Top margin */
+    color: #007bff; /* Text color */
+    text-decoration: none; /* Removes underline */
 }

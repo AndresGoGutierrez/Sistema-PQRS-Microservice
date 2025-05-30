@@ -1,44 +1,44 @@
-<!DOCTYPE html> <!-- Declaración del tipo de documento HTML -->
-<html lang="en"> <!-- Inicio del elemento HTML con atributo de idioma en inglés -->
+<!DOCTYPE html> <!-- HTML document type declaration -->
+<html lang="en"> <!-- Start of the HTML element with English language attribute -->
 
 <head>
-    <meta charset="UTF-8"> <!-- Especificación de la codificación de caracteres -->
+    <meta charset="UTF-8"> <!-- Character encoding specification -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Configuración de la vista en dispositivos móviles -->
-    <link rel="stylesheet" href="/css/styles.css"> <!-- Enlace al archivo CSS externo -->
+    <!-- Viewport settings for mobile devices -->
+    <link rel="stylesheet" href="/css/styles.css"> <!-- Link to external CSS file -->
     <link rel="icon"  type="img/ico" href="/img/icono.ico">
-    <title>Enviar PQRS</title> <!-- Título de la página -->
+    <title>Enviar PQRS</title> <!-- Page title -->
 </head>
 
 <body class="fondoSumbit">
-    <h1>Enviar una PQRS</h1> <!-- Título principal de la página -->
-    <form method="POST" action="/submit" class="contenedor"> <!-- Formulario para enviar una PQRS -->
-        <label for="tipo">Tipo:</label> <!-- Etiqueta para el campo de tipo -->
-        <select name="tipo" id="tipo"> <!-- Menú desplegable para seleccionar el tipo -->
-            <option value="Petición">Petición</option> <!-- Opción de tipo Petición -->
-            <option value="Queja">Queja</option> <!-- Opción de tipo Queja -->
-            <option value="Reclamo">Reclamo</option> <!-- Opción de tipo Reclamo -->
-            <option value="Sugerencia">Sugerencia</option> <!-- Opción de tipo Sugerencia -->
-            <option value="Solicitud">Solicitud</option> <!-- Opción de tipo Solicitud -->
-            <option value="Informe">Informe</option> <!-- Opción de tipo Informe -->
+    <h1>Enviar una PQRS</h1> <!-- Main page heading -->
+    <form method="POST" action="/submit" class="contenedor"> <!-- Form to submit a PQRS -->
+        <label for="tipo">Tipo:</label> <!-- Label for the type field -->
+        <select name="tipo" id="tipo"> <!-- Dropdown menu to select the type -->
+            <option value="Petición">Petición</option> <!-- Option for type Petition -->
+            <option value="Queja">Queja</option> <!-- Option for type Complaint -->
+            <option value="Reclamo">Reclamo</option> <!-- Option for type Claim -->
+            <option value="Sugerencia">Sugerencia</option> <!-- Option for type Suggestion -->
+            <option value="Solicitud">Solicitud</option> <!-- Option for type Request -->
+            <option value="Informe">Informe</option> <!-- Option for type Report -->
         </select>
         <br>
-        <label for="categoria_id">Categoría:</label> <!-- Etiqueta para el campo de categoría -->
-        <select name="categoria_id" id="categoria_id"> <!-- Menú desplegable para seleccionar la categoría -->
-            <% categorias.forEach(categoria=> { %> <!-- Bucle para generar opciones de categoría -->
+        <label for="categoria_id">Categoría:</label> <!-- Label for the category field -->
+        <select name="categoria_id" id="categoria_id"> <!-- Dropdown menu to select the category -->
+            <% categorias.forEach(categoria=> { %> <!-- Loop to generate category options -->
                 <option value="<%= categoria.id %>">
                     <%= categoria.nombre %>
-                </option> <!-- Opción de categoría -->
-                <% }); %> <!-- Fin del bucle -->
+                </option> <!-- Category option -->
+                <% }); %> <!-- End of loop -->
         </select>
         <br>
-        <label for="descripcion">Descripción:</label> <!-- Etiqueta para el campo de descripción -->
-        <textarea name="descripcion" id="descripcion" required></textarea> <!-- Campo de texto para la descripción -->
+        <label for="descripcion">Descripción:</label> <!-- Label for the description field -->
+        <textarea name="descripcion" id="descripcion" required></textarea> <!-- Text area for the description -->
         <br>
         <center>
             <button type="submit">Enviar</button>
-        </center> <!-- Botón para enviar el formulario -->
-        <a href="/">Volver a Inicio</a> <!-- Enlace para volver a la página de inicio -->
+        </center> <!-- Button to submit the form -->
+        <a href="/">Volver a Inicio</a> <!-- Link to return to the home page -->
     </form>
 </body>
 </html>

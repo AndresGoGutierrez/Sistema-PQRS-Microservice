@@ -1,38 +1,38 @@
-<!DOCTYPE html> <!-- Declaración del tipo de documento HTML -->
-<html lang="en"> <!-- Inicio del elemento HTML con el atributo de idioma en inglés -->
+<!DOCTYPE html> <!-- HTML document type declaration -->
+<html lang="en"> <!-- Start of the HTML element with English language attribute -->
 <head>
-    <meta charset="UTF-8"> <!-- Especificación de la codificación de caracteres -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Configuración de la vista en dispositivos móviles -->
-    <link rel="stylesheet" href="/css/styles.css"> <!-- Enlace al archivo CSS externo -->
+    <meta charset="UTF-8"> <!-- Character encoding specification -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Viewport settings for mobile devices -->
+    <link rel="stylesheet" href="/css/styles.css"> <!-- Link to external CSS file -->
     <link rel="icon"  type="img/ico" href="/img/icono.ico">
-    <title>Ver PQRS</title> <!-- Título de la página -->
+    <title>Ver PQRS</title> <!-- Page title -->
 </head>
 <body class="fondoPQRS">
-    <h1>Ver PQRS</h1> <!-- Título principal de la página -->
-    <table> <!-- Inicio de la tabla para mostrar las PQRSSI -->
-        <tr> <!-- Fila de encabezados de la tabla -->
-            <th>ID</th> <!-- Encabezado de columna para ID -->
-            <th>Tipo</th> <!-- Encabezado de columna para Tipo -->
-            <th>Descripción</th> <!-- Encabezado de columna para Descripción -->
-            <th>Estado</th> <!-- Encabezado de columna para Estado -->
-            <th>Fecha</th> <!-- Encabezado de columna para Fecha -->
-            <th>Categoría</th> <!-- Encabezado de columna para Categoría -->
-            <th>Usuario</th> <!-- Encabezado de columna para Usuario -->
-            <th>Historial</th> <!-- Encabezado de columna para Historial -->
+    <h1>Ver PQRS</h1> <!-- Main page heading -->
+    <table> <!-- Start of the table to display the PQRSSI -->
+        <tr> <!-- Table header row -->
+            <th>ID</th> <!-- Column header for ID -->
+            <th>Tipo</th> <!-- Column header for Type -->
+            <th>Descripción</th> <!-- Column header for Description -->
+            <th>Estado</th> <!-- Column header for Status -->
+            <th>Fecha</th> <!-- Column header for Date -->
+            <th>Categoría</th> <!-- Column header for Category -->
+            <th>Usuario</th> <!-- Column header for User -->
+            <th>Historial</th> <!-- Column header for History -->
         </tr>
-        <% pqrssi.forEach(p => { %> <!-- Bucle para iterar sobre las PQRSSI -->
-        <tr> <!-- Inicio de una fila de la tabla -->
-            <td><%= p.id %></td> <!-- Celda para mostrar el ID -->
-            <td><%= p.tipo %></td> <!-- Celda para mostrar el Tipo -->
-            <td><%= p.descripcion %></td> <!-- Celda para mostrar la Descripción -->
-            <td><%= p.estado %></td> <!-- Celda para mostrar el Estado -->
-            <td><%= p.fecha %></td> <!-- Celda para mostrar la Fecha -->
-            <td><%= p.categoria %></td> <!-- Celda para mostrar la Categoría -->
-            <td><%= p.usuario %></td> <!-- Celda para mostrar el Usuario -->
-            <td><a href="/historial/<%= p.id %>">Ver Historial</a></td> <!-- Enlace para ver el Historial -->
+        <% pqrssi.forEach(p => { %> <!-- Loop to iterate over the PQRSSI -->
+        <tr> <!-- Start of a table row -->
+            <td><%= p.id %></td> <!-- Cell to display the ID -->
+            <td><%= p.tipo %></td> <!-- Cell to display the Type -->
+            <td><%= p.descripcion %></td> <!-- Cell to display the Description -->
+            <td><%= p.estado %></td> <!-- Cell to display the Status -->
+            <td><%= p.fecha %></td> <!-- Cell to display the Date -->
+            <td><%= p.categoria %></td> <!-- Cell to display the Category -->
+            <td><%= p.usuario %></td> <!-- Cell to display the User -->
+            <td><a href="/historial/<%= p.id %>">View History</a></td> <!-- Link to view the History -->
         </tr>
-        <% }); %> <!-- Fin del bucle -->
+        <% }); %> <!-- End of the loop -->
     </table>
-    <a href="/">Volver a Inicio</a> <!-- Enlace para volver a la página de inicio -->
+    <a href="/">Return to Home</a> <!-- Link to return to the home page -->
 </body>
 </html>

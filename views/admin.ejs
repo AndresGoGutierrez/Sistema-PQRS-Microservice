@@ -1,17 +1,17 @@
-<!DOCTYPE html> <!-- Declaración del tipo de documento HTML -->
-<html lang="en"> <!-- Inicio del elemento HTML con atributo de idioma en inglés -->
+<!DOCTYPE html> <!-- HTML document type declaration -->
+<html lang="en"> <!-- Start of the HTML element with English language attribute -->
 <head>
-    <meta charset="UTF-8"> <!-- Especificación de la codificación de caracteres -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Configuración de la vista en dispositivos móviles -->
-    <link rel="stylesheet" href="/css/admin.css"> <!-- Enlace al archivo CSS externo -->
+    <meta charset="UTF-8"> <!-- Character encoding specification -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Viewport settings for mobile devices -->
+    <link rel="stylesheet" href="/css/admin.css"> <!-- Link to external CSS file -->
     <link rel="icon"  type="img/ico" href="/img/icono.ico">
 
-    <title>Administrador</title> <!-- Título de la página -->
+    <title>Administrador</title> <!-- Page title -->
 </head>
 <body>
-    <h1>Panel de Administración</h1> <!-- Título principal de la página -->
+    <h1>Panel de Administración</h1> <!-- Main page heading -->
 
-    <!-- Tabla para mostrar la lista de elementos -->
+    <!-- Table to display the list of items -->
     <table>
         <thead>
             <tr>
@@ -23,21 +23,21 @@
             </tr>
         </thead>
         <tbody>
-            <!-- Bucle para generar filas de la tabla -->
-            <% pqrssi.forEach(item => { %> <!-- Inicio del bucle -->
+            <!-- Loop to generate table rows -->
+            <% pqrssi.forEach(item => { %> <!-- Start of the loop -->
                 <tr>
-                    <td><%= item.id %></td> <!-- Columna para mostrar el ID del elemento -->
-                    <td><%= item.tipo %></td> <!-- Columna para mostrar el tipo del elemento -->
-                    <td><%= item.descripcion %></td> <!-- Columna para mostrar la descripción del elemento -->
-                    <td><%= item.estado_id %></td> <!-- Columna para mostrar el estado actual del elemento -->
+                    <td><%= item.id %></td> <!-- Column to display the item's ID -->
+                    <td><%= item.tipo %></td> <!-- Column to display the item's type -->
+                    <td><%= item.descripcion %></td> <!-- Column to display the item's description -->
+                    <td><%= item.estado_id %></td> <!-- Column to display the item's current status -->
                     <td>
-                        <!-- Formulario para cambiar el estado del elemento -->
-                        <form action="/admin/change-status" method="post"> <!-- Acción y método del formulario -->
-                            <input type="hidden" name="pqrssi_id" value="<%= item.id %>"> <!-- Campo oculto para enviar el ID del elemento -->
-                            <select name="estado_id"> <!-- Menú desplegable para seleccionar el nuevo estado -->
-                                <option value="1">Pendiente</option> <!-- Opción de estado pendiente -->
-                                <option value="2">En curso</option> <!-- Opción de estado en curso -->
-                                <option value="3">Atendida</option> <!-- Opción de estado atendida -->
+                        <!-- Form to change the item's status -->
+                        <form action="/admin/change-status" method="post"> <!-- Form action and method -->
+                            <input type="hidden" name="pqrssi_id" value="<%= item.id %>"> <!-- Hidden field to send the item's ID -->
+                            <select name="estado_id"> <!-- Dropdown menu to select the new status -->
+                                <option value="1">Pendiente</option> <!-- Pending status option -->
+                                <option value="2">En curso</option> <!-- In progress status option -->
+                                <option value="3">Atendida</option> <!-- Attended status option -->
                                 <option value="4">Aplazada</option> 
                                 <option value="5">Rechazada</option> 
                                 <option value="6">Cancelada</option> 
@@ -45,18 +45,18 @@
 
                             </select>
                             <br>
-                            <textarea name="comentario" rows="2" placeholder="Comentario"></textarea> <!-- Campo de texto para agregar un comentario -->
+                            <textarea name="comentario" rows="2" placeholder="Comentario"></textarea> <!-- Text area to add a comment -->
                             <br>
-                            <button type="submit">Cambiar Estado</button> <!-- Botón para enviar el formulario -->
+                            <button type="submit">Cambiar Estado</button> <!-- Button to submit the form -->
                         </form>
                     </td>
                 </tr>
-            <% }); %> <!-- Fin del bucle -->
+            <% }); %> <!-- End of the loop -->
             
         </tbody>
     </table>
 
-    <!-- Formulario para cerrar sesión -->
+    <!-- Form to log out -->
 
     <a href="/">Volver a Inicio</a>
 </body>

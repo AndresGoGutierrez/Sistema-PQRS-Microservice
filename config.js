@@ -1,7 +1,7 @@
-// Configuración de la base de datos
+// Database configuration
 module.exports = {
-    host: 'localhost', // Dirección del servidor de la base de datos
-    user: 'root', // Nombre de usuario de la base de datos
-    password: '', // Contraseña de la base de datos
-    database: 'dbpqrs' // Nombre de la base de datos
+    host: 'localhost', // Database server address
+    user: 'root', // Database username
+    password: '', // Database password
+    database: 'dbpqrs' // Database name
 };
