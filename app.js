@@ -1,209 +1,494 @@
-const express = require('express'); // Import the express module
-const mysql = require('mysql'); // Import the mysql module
-const path = require('path'); // Import the path module
-const bodyParser = require('body-parser'); // Import the body-parser module
-const session = require('express-session'); // Import the express-session module
-const bcrypt = require('bcrypt'); // Import the bcrypt module for password hashing
-const config = require('./config'); // Import the config.js file for database credentials
+require("dotenv").config()
+const express = require("express")
+const mysql = require("mysql")
+const cors = require("cors")
+const jwt = require("jsonwebtoken")
+const axios = require("axios")
+const config = require("./config")
 
-const app = express(); // Create an instance of express
+const app = express()
 
-const db = mysql.createConnection(config); // Create a database connection using the config.js settings
+// Database connection
+const db = mysql.createConnection(config.database)
 
-db.connect(err => { // Connect to the database
+db.connect((err) => {
+  if (err) {
+    console.error("Error connecting to the database:", err.stack)
+    return
+  }
+  console.log("Connected to PQRS database")
+})
+
+// Middleware
+app.use(
+  cors({
+    origin: ["http://localhost:3000", "http://localhost:5173"], // Frontend URLs
+    credentials: true,
+  }),
+)
+app.use(express.json())
+
+// JWT verification middleware
+const verifyToken = (req, res, next) => {
+  const token = req.headers.authorization?.split(" ")[1] || req.headers["x-access-token"]
+
+  if (!token) {
+    return res.status(401).json({ message: "No token provided" })
+  }
+
+  try {
+    console.log("Verifying token:", token)
+    const decoded = jwt.verify(token, config.jwtSecret)
+    console.log("Decoded token:", decoded)
+
+    // Normalizar la estructura del usuario
+    req.user = {
+      id: decoded.id || decoded.user_id || decoded.userId,
+      username: decoded.username || decoded.name,
+      email: decoded.email,
+      roles: decoded.roles || [],
+    }
+
+    // Asegurar que roles sea un array
+    if (typeof req.user.roles === "string") {
+      req.user.roles = [req.user.roles]
+    }
+
+    // Si no hay roles, asignar rol de usuario por defecto
+    if (!req.user.roles || !Array.isArray(req.user.roles) || req.user.roles.length === 0) {
+      req.user.roles = ["user"]
+    }
+
+    console.log("Normalized user:", req.user)
+    next()
+  } catch (error) {
+    console.error("Token verification error:", error)
+    return res.status(401).json({ message: "Invalid token" })
+  }
+}
+
+// Middleware para obtener roles del usuario desde el microservicio de autenticación
+const getUserRoles = async (req, res, next) => {
+  try {
+    const token = req.headers.authorization?.split(" ")[1] || req.headers["x-access-token"]
+
+    if (!token) {
+      return next()
+    }
+
+    console.log("Fetching user roles from auth service...")
+
+    try {
+      const response = await axios.post(
+        "http://localhost:4000/api/auth/verify",
+        { token },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "x-access-token": token,
+            "Content-Type": "application/json",
+          },
+        },
+      )
+
+      console.log("Auth service response:", response.data)
+
+      if (response.data && response.data.roles) {
+        // Extraer los nombres de los roles
+        const roleNames = response.data.roles.map((role) => role.name || role)
+        req.user.roles = roleNames
+        console.log("Updated user roles from auth service:", roleNames)
+      }
+    } catch (authError) {
+      console.log("Could not fetch roles from auth service:", authError.message)
+      // Continuar con los roles por defecto
+    }
+
+    next()
+  } catch (error) {
+    console.error("Error in getUserRoles middleware:", error)
+    next()
+  }
+}
+
+// Role verification middleware
+const requireRole = (roles) => {
+  return (req, res, next) => {
+    console.log("Checking roles. Required:", roles, "User has:", req.user.roles)
+
+    if (!req.user) {
+      return res.status(403).json({ message: "User not found" })
+    }
+
+    if (!req.user.roles || !Array.isArray(req.user.roles)) {
+      return res.status(403).json({ message: "No roles found" })
+    }
+
+    const hasRole = roles.some((role) => req.user.roles.includes(role))
+    if (!hasRole) {
+      return res.status(403).json({
+        message: "Insufficient permissions",
+        required: roles,
+        current: req.user.roles,
+      })
+    }
+
+    console.log("Role check passed!")
+    next()
+  }
+}
+
+// Health check
+app.get("/health", (req, res) => {
+  res.json({ status: "OK", service: "PQRS Microservice" })
+})
+
+// Debug endpoint to check token
+app.get("/api/debug/token", verifyToken, getUserRoles, (req, res) => {
+  res.json({
+    user: req.user,
+    message: "Token is valid",
+  })
+})
+
+// IMPORTANT: Statistics route MUST come before the dynamic :id route
+app.get("/api/pqrs/stats", verifyToken, getUserRoles, requireRole(["admin", "moderator"]), (req, res) => {
+  console.log("Stats endpoint hit by user:", req.user)
+
+  const queries = [
+    "SELECT COUNT(*) as total FROM pqrssi",
+    "SELECT COUNT(*) as pending FROM pqrssi WHERE estado_id = 1",
+    "SELECT COUNT(*) as in_progress FROM pqrssi WHERE estado_id = 2",
+    "SELECT COUNT(*) as completed FROM pqrssi WHERE estado_id = 3",
+  ]
+
+  Promise.all(
+    queries.map((query) => {
+      return new Promise((resolve, reject) => {
+        db.query(query, (err, results) => {
+          if (err) reject(err)
+          else resolve(results[0])
+        })
+      })
+    }),
+  )
+    .then((results) => {
+      const stats = {
+        total: results[0].total,
+        pending: results[1].pending,
+        inProgress: results[2].in_progress,
+        completed: results[3].completed,
+      }
+      console.log("Returning stats:", stats)
+      res.json(stats)
+    })
+    .catch((err) => {
+      console.error("Error fetching statistics:", err)
+      res.status(500).json({ message: "Error fetching statistics", error: err })
+    })
+})
+
+// Routes
+
+// Get all categories
+app.get("/api/categories", verifyToken, getUserRoles, (req, res) => {
+  db.query("SELECT * FROM categorias", (err, results) => {
     if (err) {
-        console.error('Error connecting to the database:', err.stack);
-        return;
+      return res.status(500).json({ message: "Error fetching categories", error: err })
     }
-    console.log('Connected to the database'); // Confirmation message for successful connection
-});
+    res.json(results)
+  })
+})
 
-app.set('view engine', 'ejs'); // Set the template engine to EJS
-app.set('views', path.join(__dirname, 'views')); // Set the views directory path
+// Get all states
+app.get("/api/states", verifyToken, getUserRoles, (req, res) => {
+  db.query("SELECT * FROM estados", (err, results) => {
+    if (err) {
+      return res.status(500).json({ message: "Error fetching states", error: err })
+    }
+    res.json(results)
+  })
+})
 
-app.use(bodyParser.urlencoded({ extended: false })); // Configure body-parser to parse URL-encoded data
-app.use(express.static(path.join(__dirname, 'public'))); // Set the static files folder
+// Create a new PQRS
+app.post("/api/pqrs", verifyToken, getUserRoles, (req, res) => {
+  const { tipo, descripcion, categoria_id } = req.body
+  const mongoUserId = req.user.id // MongoDB ID from JWT
+  const estado_id = 1 // Initial state: Pending
 
-app.use(session({ // Configure sessions
-    secret: 'your_secret_key', // Secret key to sign the session
-    resave: false, // Do not save session if unmodified
-    saveUninitialized: true // Save new but uninitialized sessions
-}));
+  if (!tipo || !descripcion || !categoria_id) {
+    return res.status(400).json({ message: "Missing required fields" })
+  }
 
-// Main route
-app.get('/', (req, res) => {
-    res.render('index', { nombre: req.session.nombre, isAdmin: req.session.isAdmin }); // Render index view and pass session username
-});
+  // First, check if we have a mapping for this MongoDB user ID
+  db.query("SELECT id FROM usuarios WHERE mongo_id = ?", [mongoUserId], (err, results) => {
+    if (err) {
+      console.error("Error checking user mapping:", err)
+      return res.status(500).json({ message: "Error checking user mapping", error: err })
+    }
 
-// Register route
-app.get('/register', (req, res) => {
-    res.render('register'); // Render the register view
-});
+    let mysqlUserId
 
-app.post('/register', async (req, res) => {
-    const { nombre, email, contraseña } = req.body; // Get form data
-    const hashedPassword = await bcrypt.hash(contraseña, 10); // Hash the password
-
-    var contraseñaRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()+,.?":{}|<>]).{8,}$/;
-
-    if (!contraseñaRegex.test(contraseña)) {
-        return res.send("Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character.")
+    if (results.length > 0) {
+      // We have a mapping, use the existing MySQL user ID
+      mysqlUserId = results[0].id
+      console.log(`Found existing user mapping: MongoDB ID ${mongoUserId} -> MySQL ID ${mysqlUserId}`)
+      insertPQRS(mysqlUserId)
     } else {
-        db.query('SELECT * FROM usuarios WHERE email = ?', [email], (err, results) => {
-            if (err) throw err;
-            if (results.length > 0) {
-                return res.send('Email is already registered'); // If email exists, send a message
-            } else {
-                db.query('INSERT INTO usuarios (nombre, email, contraseña) VALUES (?, ?, ?)',
-                    [nombre, email, hashedPassword],
-                    (err, result) => {
-                        if (err) throw err;
-                        res.redirect('/login'); // Redirect to login page
-                    });
-            }
-        });
-    }
-});
+      // No mapping exists, create a new user in the MySQL database
+      console.log(`No mapping found for MongoDB user ID ${mongoUserId}, creating new user`)
 
-// Login route
-app.get('/login', (req, res) => {
-    res.render('login'); // Render the login view
-});
-
-app.post('/login', (req, res) => {
-    const { email, contraseña } = req.body; // Get form data
-    db.query('SELECT * FROM usuarios WHERE email = ?', [email], async (err, results) => {
-        if (err) throw err;
-        if (results.length > 0) {
-            const user = results[0];
-            if (await bcrypt.compare(contraseña, user.contraseña)) { // Compare hashed password
-                req.session.loggedin = true; // Mark session as logged in
-                req.session.nombre = user.nombre; // Save username in session
-                req.session.userId = user.id; // Save user ID in session
-                req.session.isAdmin = user.is_admin; // Save admin status in session
-                res.redirect('/'); // Redirect to main page
-            } else {
-                res.send('Incorrect password!'); // If password is wrong, send message
-            }
-        } else {
-            res.send('User not found!'); // If user not found, send message
-        }
-    });
-});
-
-// Admin route
-app.get('/admin', (req, res) => {
-    if (!req.session.loggedin || !req.session.isAdmin) { // Check if user is logged in and is admin
-        return res.redirect('/login'); // Otherwise, redirect to login page
-    }
-    db.query('SELECT * FROM pqrssi', (err, results) => { // Query all PQRSSI
-        if (err) throw err;
-        res.render('admin', { pqrssi: results }); // Render admin view with PQRSSI
-    });
-});
-
-app.post('/admin/change-status', (req, res) => {
-    if (!req.session.loggedin || !req.session.isAdmin) { // Check if user is logged in and is admin
-        return res.redirect('/login'); // Otherwise, redirect to login page
-    }
-    const { pqrssi_id, estado_id, comentario } = req.body; // Get form data
-    const comentarioCompleto = `Status changed by admin: ${comentario}`; // Prepare full comment
-
-    console.log('Received data:', { pqrssi_id, estado_id, comentario }); // For debugging
-
-    db.query('UPDATE pqrssi SET estado_id = ? WHERE id = ?', [estado_id, pqrssi_id], (err) => { // Update PQRSSI status
-        if (err) throw err;
-
-        db.query('INSERT INTO historial (pqrssi_id, estado_id, comentario) VALUES (?, ?, ?)',
-            [pqrssi_id, estado_id, comentarioCompleto],
-            (err) => {
-                if (err) throw err;
-                console.log('Stored comment:', comentarioCompleto); // For debugging
-                res.redirect('/admin'); // Redirect to admin page
-            }
-        );
-    });
-});
-
-// Logout route
-app.get('/logout', (req, res) => {
-    req.session.destroy(); // Destroy session
-    res.redirect('/'); // Redirect to main page
-});
-
-// Route to submit a PQRSSI
-app.get('/submit', (req, res) => {
-    if (!req.session.loggedin) { // Check if user is logged in
-        return res.redirect('/login'); // Otherwise, redirect to login page
-    }
-    db.query('SELECT * FROM categorias', (err, results) => { // Query all categories
-        if (err) throw err;
-        res.render('submit', { categorias: results }); // Render submit view with categories
-    });
-});
-
-app.post('/submit', (req, res) => {
-    if (!req.session.loggedin) { // Check if user is logged in
-        return res.redirect('/login'); // Otherwise, redirect to login page
-    }
-    const { tipo, descripcion, categoria_id } = req.body; // Get form data
-    const usuario_id = req.session.userId; // Use authenticated user ID
-    const estado_id = 1; // Initial PQRSSI status
-
-    db.query('INSERT INTO pqrssi (tipo, descripcion, usuario_id, estado_id, categoria_id) VALUES (?, ?, ?, ?, ?)',
-        [tipo, descripcion, usuario_id, estado_id, categoria_id],
+      // Create a placeholder user with the MongoDB ID as reference
+      db.query(
+        "INSERT INTO usuarios (nombre, email, contraseña, mongo_id) VALUES (?, ?, ?, ?)",
+        [
+          `User-${mongoUserId.substring(0, 8)}`,
+          `user-${mongoUserId.substring(0, 8)}@example.com`,
+          "placeholder",
+          mongoUserId,
+        ],
         (err, result) => {
-            if (err) throw err;
+          if (err) {
+            console.error("Error creating user mapping:", err)
+            return res.status(500).json({ message: "Error creating user mapping", error: err })
+          }
 
-            const pqrssi_id = result.insertId; // Get newly created PQRSSI ID
+          mysqlUserId = result.insertId
+          console.log(`Created new user mapping: MongoDB ID ${mongoUserId} -> MySQL ID ${mysqlUserId}`)
+          insertPQRS(mysqlUserId)
+        },
+      )
+    }
 
-            db.query('INSERT INTO historial (pqrssi_id, estado_id, comentario) VALUES (?, ?, ?)',
-                [pqrssi_id, estado_id, 'Request created'],
-                (err) => {
-                    if (err) throw err;
-                    res.redirect('/'); // Redirect to main page
-                }
-            );
+    function insertPQRS(userId) {
+      db.query(
+        "INSERT INTO pqrssi (tipo, descripcion, usuario_id, estado_id, categoria_id) VALUES (?, ?, ?, ?, ?)",
+        [tipo, descripcion, userId, estado_id, categoria_id],
+        (err, result) => {
+          if (err) {
+            console.error("Error creating PQRS:", err)
+            return res.status(500).json({ message: "Error creating PQRS", error: err })
+          }
+
+          const pqrssi_id = result.insertId
+
+          // Add to history
+          db.query(
+            "INSERT INTO historial (pqrssi_id, estado_id, comentario) VALUES (?, ?, ?)",
+            [pqrssi_id, estado_id, "PQRS created"],
+            (err) => {
+              if (err) {
+                console.error("Error adding to history:", err)
+              }
+            },
+          )
+
+          res.status(201).json({
+            message: "PQRS created successfully",
+            id: pqrssi_id,
+          })
+        },
+      )
+    }
+  })
+})
+
+// Get PQRS (users see only their own, admins/moderators see all)
+app.get("/api/pqrs", verifyToken, getUserRoles, (req, res) => {
+  const isAdminOrModerator =
+    req.user.roles &&
+    Array.isArray(req.user.roles) &&
+    (req.user.roles.includes("admin") || req.user.roles.includes("moderator"))
+
+  console.log("Getting PQRS for user:", req.user.id, "Is admin/moderator:", isAdminOrModerator)
+
+  const mongoUserId = req.user.id // MongoDB ID from JWT
+
+  // First, get the MySQL user ID from the MongoDB ID
+  db.query("SELECT id FROM usuarios WHERE mongo_id = ?", [mongoUserId], (err, userResults) => {
+    if (err) {
+      console.error("Error finding user mapping:", err)
+      return res.status(500).json({ message: "Error finding user mapping", error: err })
+    }
+
+    if (userResults.length === 0 && !isAdminOrModerator) {
+      // No mapping exists and user is not admin/moderator, return empty array
+      return res.json([])
+    }
+
+    const mysqlUserId = userResults.length > 0 ? userResults[0].id : null
+
+    let query = `
+      SELECT p.id, p.tipo, p.descripcion, e.nombre AS estado, p.fecha, 
+             c.nombre AS categoria, p.usuario_id
+      FROM pqrssi p
+      JOIN estados e ON p.estado_id = e.id
+      JOIN categorias c ON p.categoria_id = c.id
+    `
+
+    const params = []
+
+    if (!isAdminOrModerator && mysqlUserId) {
+      query += " WHERE p.usuario_id = ?"
+      params.push(mysqlUserId)
+    }
+
+    query += " ORDER BY p.fecha DESC"
+
+    db.query(query, params, (err, results) => {
+      if (err) {
+        console.error("Error fetching PQRS:", err)
+        return res.status(500).json({ message: "Error fetching PQRS", error: err })
+      }
+      console.log(`Found ${results.length} PQRS records`)
+      res.json(results)
+    })
+  })
+})
+
+// Get specific PQRS by ID (MUST come after /stats route)
+app.get("/api/pqrs/:id", verifyToken, getUserRoles, (req, res) => {
+  const pqrsId = req.params.id
+  const mongoUserId = req.user.id // MongoDB ID from JWT
+  const isAdminOrModerator =
+    req.user.roles &&
+    Array.isArray(req.user.roles) &&
+    (req.user.roles.includes("admin") || req.user.roles.includes("moderator"))
+
+  console.log("Getting PQRS ID:", pqrsId, "for user:", mongoUserId)
+
+  // First, get the MySQL user ID from the MongoDB ID
+  db.query("SELECT id FROM usuarios WHERE mongo_id = ?", [mongoUserId], (err, userResults) => {
+    if (err) {
+      console.error("Error finding user mapping:", err)
+      return res.status(500).json({ message: "Error finding user mapping", error: err })
+    }
+
+    const mysqlUserId = userResults.length > 0 ? userResults[0].id : null
+
+    let query = `
+      SELECT p.id, p.tipo, p.descripcion, e.nombre AS estado, p.fecha, 
+             c.nombre AS categoria, p.usuario_id, p.estado_id
+      FROM pqrssi p
+      JOIN estados e ON p.estado_id = e.id
+      JOIN categorias c ON p.categoria_id = c.id
+      WHERE p.id = ?
+    `
+
+    const params = [pqrsId]
+
+    if (!isAdminOrModerator && mysqlUserId) {
+      query += " AND p.usuario_id = ?"
+      params.push(mysqlUserId)
+    }
+
+    db.query(query, params, (err, results) => {
+      if (err) {
+        console.error("Error fetching PQRS:", err)
+        return res.status(500).json({ message: "Error fetching PQRS", error: err })
+      }
+
+      if (results.length === 0) {
+        return res.status(404).json({ message: "PQRS not found or access denied" })
+      }
+
+      res.json(results[0])
+    })
+  })
+})
+
+// Update PQRS status (only admin and moderator)
+app.put("/api/pqrs/:id/status", verifyToken, getUserRoles, requireRole(["admin", "moderator"]), (req, res) => {
+  const pqrsId = req.params.id
+  const { estado_id, comentario } = req.body
+
+  if (!estado_id) {
+    return res.status(400).json({ message: "Estado ID is required" })
+  }
+
+  db.query("UPDATE pqrssi SET estado_id = ? WHERE id = ?", [estado_id, pqrsId], (err) => {
+    if (err) {
+      console.error("Error updating PQRS status:", err)
+      return res.status(500).json({ message: "Error updating PQRS status", error: err })
+    }
+
+    // Add to history
+    const comentarioCompleto = `Status changed by ${req.user.roles.includes("admin") ? "admin" : "moderator"}: ${comentario || "No comment"}`
+
+    db.query(
+      "INSERT INTO historial (pqrssi_id, estado_id, comentario) VALUES (?, ?, ?)",
+      [pqrsId, estado_id, comentarioCompleto],
+      (err) => {
+        if (err) {
+          console.error("Error adding to history:", err)
         }
-    );
-});
+      },
+    )
 
-// Route to view PQRSSI
-app.get('/view', (req, res) => {
-    if (!req.session.loggedin) { // Check if user is logged in
-        return res.redirect('/login'); // Otherwise, redirect to login page
+    res.json({ message: "PQRS status updated successfully" })
+  })
+})
+
+// Get PQRS history
+app.get("/api/pqrs/:id/history", verifyToken, getUserRoles, (req, res) => {
+  const pqrsId = req.params.id
+  const mongoUserId = req.user.id // MongoDB ID from JWT
+  const isAdminOrModerator =
+    req.user.roles &&
+    Array.isArray(req.user.roles) &&
+    (req.user.roles.includes("admin") || req.user.roles.includes("moderator"))
+
+  // First, get the MySQL user ID from the MongoDB ID
+  db.query("SELECT id FROM usuarios WHERE mongo_id = ?", [mongoUserId], (err, userResults) => {
+    if (err) {
+      console.error("Error finding user mapping:", err)
+      return res.status(500).json({ message: "Error finding user mapping", error: err })
     }
-    db.query(`
-        SELECT p.id, p.tipo, p.descripcion, e.nombre AS estado, p.fecha, c.nombre AS categoria, u.nombre AS usuario
-        FROM pqrssi p
-        JOIN estados e ON p.estado_id = e.id
-        JOIN categorias c ON p.categoria_id = c.id
-        JOIN usuarios u ON p.usuario_id = u.id
-    `, (err, results) => {
-        if (err) throw err;
-        res.render('view', { pqrssi: results }); // Render view PQRSSI with query results
-    });
-});
 
-// Route to view PQRSSI history
-app.get('/historial/:pqrssi_id', (req, res) => {
-    if (!req.session.loggedin) { // Check if user is logged in
-        return res.redirect('/login'); // Otherwise, redirect to login page
-    }
-    const pqrssi_id = req.params.pqrssi_id; // Get PQRSSI ID from URL params
+    const mysqlUserId = userResults.length > 0 ? userResults[0].id : null
 
-    db.query(`
-        SELECT h.id, h.fecha, e.nombre AS estado, h.comentario
-        FROM historial h
-        JOIN estados e ON h.estado_id = e.id
-        WHERE h.pqrssi_id = ?
-    `, [pqrssi_id], (err, results) => {
-        if (err) throw err;
-        res.render('historial', { historial: results }); // Render history view with query results
-    });
-});
+    // First check if user has access to this PQRS
+    const accessQuery = "SELECT usuario_id FROM pqrssi WHERE id = ?"
+    const accessParams = [pqrsId]
 
-// Start the server on port 3000
-app.listen(3000, () => {
-    console.log('Server running on port 3000'); // Confirmation message that the server is running
-});
+    db.query(accessQuery, accessParams, (err, pqrsResults) => {
+      if (err) {
+        console.error("Error checking PQRS access:", err)
+        return res.status(500).json({ message: "Error checking PQRS access", error: err })
+      }
+
+      if (pqrsResults.length === 0) {
+        return res.status(404).json({ message: "PQRS not found" })
+      }
+
+      // Check if user has access
+      if (!isAdminOrModerator && mysqlUserId && pqrsResults[0].usuario_id !== mysqlUserId) {
+        return res.status(403).json({ message: "Access denied" })
+      }
+
+      // Get history
+      db.query(
+        `
+          SELECT h.id, h.fecha, e.nombre AS estado, h.comentario
+          FROM historial h
+          JOIN estados e ON h.estado_id = e.id
+          WHERE h.pqrssi_id = ?
+          ORDER BY h.fecha DESC
+        `,
+        [pqrsId],
+        (err, results) => {
+          if (err) {
+            console.error("Error fetching PQRS history:", err)
+            return res.status(500).json({ message: "Error fetching PQRS history", error: err })
+          }
+          res.json(results)
+        },
+      )
+    })
+  })
+})
+
+const PORT = process.env.PORT || 5000
+app.listen(PORT, () => {
+  console.log(`PQRS Microservice running on port ${PORT}`)
+})

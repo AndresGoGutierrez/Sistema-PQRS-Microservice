@@ -1,7 +1,10 @@
-// Database configuration
 module.exports = {
-    host: 'localhost', // Database server address
-    user: 'root', // Database username
-    password: '', // Database password
-    database: 'dbpqrs' // Database name
-};
+  database: {
+    host: "localhost",
+    user: "root",
+    password: "",
+    database: "dbpqrs",
+  },
+  jwtSecret: "products-Api",
+  port: 5000,
+}
